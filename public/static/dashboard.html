@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="robots" content="noindex">
+    <title>VRChat HLS Bridge - Dashboard</title>
+    <script>
+        var endpoint = window.location.origin;
+        function GetQuery(name) {
+            url = window.location.href;
+            name = name.replace(/[\[\]]/g, "\\$&");
+            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, " "));
+        }
+        function QueryPlaylist(url, callback) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', url);
+            xhr.onload = function () {
+                callback(JSON.parse(xhr.responseText));
+            };
+            xhr.send();
+        }
+        var sid = GetQuery('sid');
+    </script>
+    <style>
+        * {
+            font-family: sans-serif;
+        }
+
+        table {
+            width: 300px;
+        }
+
+        tr {
+            text-align: center;
+            vertical-align: top;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main" style="margin: 35px">
+        <div id="request">
+            <h3>Program request :
+                <span id="endpoint"></span>
+            </h3>
+            <h3>Instance Key is
+                <span id="sid"></span>
+            </h3>
+        </div>
+        <table id="dashboard">
+            <tr id="label"></tr>
+            <tr id="thumbs"></tr>
+            <tr id="notes"></tr>
+        </table>
+    </div>
+    <script>
+        document.getElementById('sid').innerText = GetQuery('sid');
+        document.getElementById('endpoint').innerText = endpoint;
+        if (GetQuery('key') == 'hidden') {
+            document.getElementById('request').setAttribute('hidden', true);
+        }
+        function RefrashTable(endpoint, sid) {
+            QueryPlaylist(endpoint + "/api/list?instance=" + sid, function (playlists) {
+                var num = 0;
+                var label = document.createElement('tr');
+                label.setAttribute('id', 'label');
+                var thumbs = document.createElement('tr');
+                thumbs.setAttribute('id', 'thumbs');
+                var notes = document.createElement('tr');
+                notes.setAttribute('id', 'notes');
+                playlists.forEach(function (playlist) {
+                    num = num + 1;
+                    var head = document.createElement('th');
+                    var ch = document.createElement('h2');
+                    ch.innerText = "Channel " + num;
+                    head.appendChild(ch);
+                    label.appendChild(head);
+                    var buttom = document.createElement('td');
+                    var thumb = document.createElement('img');
+                    thumb.setAttribute('width', "300px");
+                    thumb.setAttribute('src', playlist.metadate.thumbs);
+                    buttom.appendChild(thumb);
+                    thumbs.appendChild(buttom);
+                    var attr = document.createElement('td');
+                    var note = document.createElement('h3');
+                    note.innerText = playlist.metadate.title;
+                    attr.appendChild(note);
+                    notes.appendChild(attr);
+                });
+                var node1 = document.getElementById('label');
+                var node2 = document.getElementById('thumbs');
+                var node3 = document.getElementById('notes');
+                node1.parentNode.replaceChild(label, node1);
+                node2.parentNode.replaceChild(thumbs, node2);
+                node3.parentNode.replaceChild(notes, node3);
+                setTimeout(function () { RefrashTable(endpoint, GetQuery('sid')) }, 30000);
+            })
+        }
+        setTimeout((RefrashTable(endpoint, GetQuery('sid'))), 0);
+    </script>
+</body>
+
+</html>

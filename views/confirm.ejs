@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="robots" content="noindex">
+    <title>YUKIMOCHI VRChat HLS Bridge - Program Manager</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+
+<body>
+    <h1>VRChat HLS Bridge - Program Manager</h1>
+    <h2>Confirmation of Your Request</h2>
+    <table>
+        <tr>
+            <td>
+                <img width="200px" src="<%=preview.thumbs %>">
+            </td>
+            <td>
+                <table>
+                    <tr>
+                        <td>Title</td>
+                        <td>
+                            <%=preview.title %>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Owner</td>
+                        <td>
+                            <%=preview.author %>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Platform</td>
+                        <td>
+                            <%=preview.platform %>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <br />
+    <form id="request" method="post" action="/submit">
+        <input type="hidden" name="instance" value="<%=instance %>">
+        <input type="hidden" name="ls_url" value="<%=ls_url %>">
+        <input type="submit" value="Add Playlist" />
+    </form>
+</body>
+
+</html>

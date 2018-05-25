@@ -1,0 +1,14 @@
+{
+    "name": "VRC_HLS",
+    "description": "YUKIMOCHI VRChat HLS Bridge",
+    "repository": "https://github.com/yukimochi/VRC_HLS",
+    "logo": "https://raw.githubusercontent.com/yukimochi/VRC_HLS/master/icon.png",
+    "buildpacks": [
+      {
+        "url": "heroku/nodejs"
+      }
+    ],
+    "addons": [
+      "heroku-redis"
+    ]
+  }

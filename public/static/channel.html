@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="robots" content="noindex">
+    <title>VRChat HLS Bridge</title>
+    <script>
+        var endpoint = window.location.origin;
+        function IsSubmonitor() {
+            return window.parent.screen.width !== 1940;
+        }
+        function GetQuery(name) {
+            url = window.location.href;
+            name = name.replace(/[\[\]]/g, "\\$&");
+            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, " "));
+        }
+        var sid = GetQuery('sid');
+    </script>
+    <style>
+        * {
+            font-family: sans-serif;
+        }
+
+        h1 {
+            font-size: 80px
+        }
+
+        h2 {
+            font-size: 60px;
+        }
+
+        h3 {
+            font-size: 40px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main" style="margin: 35px">
+        <h1>Welcome to VRChat-HLS Bridge</h1>
+        <h2>Here is where watch
+            <span style="color: red;">Live Streams</span> in VRChat.</h2>
+        <h3>↓ Program request ↓</h3>
+        <h3>URL :
+            <span id="endpoint"></span>
+        </h3>
+        <h2>Instance Key is
+            <span id="instance"></span>
+        </h2>
+        <h3>Powered by
+            <br />
+            <br />
+            <img src="videojs.png" height="120" />
+        </h3>
+    </div>
+    <script>
+        document.getElementById('endpoint').innerText = endpoint;
+        if (IsSubmonitor()) {
+            location.href = "./dashboard.html?sid=" + sid;
+        } else {
+            document.getElementById('instance').innerText = sid;
+        }
+    </script>
+</body>
+
+</html>
