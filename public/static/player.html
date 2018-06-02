@@ -18,6 +18,13 @@
             if (!results[2]) return '';
             return decodeURIComponent(results[2].replace(/\+/g, " "));
         }
+        function Contact_AS(swf) {
+            if (navigator.appName.indexOf("Microsoft") != -1) {
+                return window[swf];
+            } else {
+                return document[swf];
+            }
+        }
         var sid = GetQuery('instance');
     </script>
 </head>
@@ -31,9 +38,12 @@
             </form>
         </section>
     </div>
-
+    
     <script>
         document.getElementById('Connection').setAttribute('src', decodeURIComponent(GetQuery('src')));
+        function audio_control(volume) {
+            Contact_AS("VRC_HLS_Flash_api").vjs_setProperty('volume', volume / 100);
+        }
     </script>
     <script>
         (function (window, videojs) {

@@ -91,6 +91,17 @@ WebPanel では、色の発色がおかしいという現象が[見つかって�
 Duplicate Screen で、 [UUUPA/Degamma (MIT Licence)](https://github.com/UUUPA/Degamma) などのシェーダを適用するとよい。
 
 ## 使い方（応用）
+### 音量変更を行う javascript 関数について
+javascript の `audio_control` 関数を実行することで、オーディオの音量を変更できます。
+
+#### audio_control (volume:Number)
+  - volume (Number) : 音量を設定する。 `0 ~ 100` までの整数値。初期設定では `100` 。 `100` を超えてもそれ以上大きくなることはない。
+
+  例：( `Set-WebPanelURI` や ブックマークレット)
+  ````
+  javascript:setTimeout(audio_control(50),0);
+  ````
+
 ### Heroku や 独自のサーバを構築された場合
 上記の使い方に表示されているドメイン(`https://vrchat-hls-bridge.herokuapp.com`)をご自身のドメインに置き換えます。
 
