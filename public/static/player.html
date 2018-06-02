@@ -27,6 +27,11 @@
         }
         var sid = GetQuery('instance');
     </script>
+    <style>
+        body {
+            background-color: #000000;
+        }
+    </style>
 </head>
 
 <body>
@@ -38,7 +43,7 @@
             </form>
         </section>
     </div>
-    
+
     <script>
         document.getElementById('Connection').setAttribute('src', decodeURIComponent(GetQuery('src')));
         function audio_control(volume) {
