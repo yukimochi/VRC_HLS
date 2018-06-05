@@ -43,6 +43,7 @@ function youtube_live(lvid, callback) {
                 "author": vars.author,
                 "m3u8": vars.hlsvp,
                 "thumbs": thumb_pickup(vars.player_response),
+                "lvid" : lvid,
                 "platform": "YouTube Live",
                 "provider": "YouTube"
             }
