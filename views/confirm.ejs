@@ -5,6 +5,31 @@
     <meta name="robots" content="noindex">
     <title>YUKIMOCHI VRChat HLS Bridge - Program Manager</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script>
+        var endpoint = window.location.origin;
+        function QueryPlaylist(url, callback) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', url);
+            xhr.onload = function () {
+                callback(JSON.parse(xhr.responseText));
+            };
+            xhr.send();
+        }
+    </script>
+    <style>
+        table#preview{
+            width:400px;
+        }
+
+        table#dashboard{
+            width:200px;
+        }
+
+        tr {
+            text-align: center;
+            vertical-align: top;
+        }
+    </style>
 </head>
 
 <body>
@@ -16,7 +41,7 @@
                 <img width="200px" src="<%=preview.thumbs %>">
             </td>
             <td>
-                <table>
+                <table id="preview">
                     <tr>
                         <td>Title</td>
                         <td>
@@ -44,7 +69,63 @@
         <input type="hidden" name="instance" value="<%=instance %>">
         <input type="hidden" name="ls_url" value="<%=ls_url %>">
         <input type="submit" value="Add Playlist" />
+        <select id="overrides" name="override">
+            <option value="null" selected>Add or Override oldest</option>
+        </select>
     </form>
+    
+    <br />
+    
+    <h2>Present Program List</h2>
+    <table id="dashboard">
+        <tr id="label"></tr>
+        <tr id="thumbs"></tr>
+        <tr id="notes"></tr>
+    </table>
+    <script>
+    
+    function RefrashTable(endpoint, sid) {
+        QueryPlaylist(endpoint + "/api/list?instance=" + sid, function (playlists) {
+            var num = 0;
+            var label = document.createElement('tr');
+            label.setAttribute('id', 'label');
+            var thumbs = document.createElement('tr');
+            thumbs.setAttribute('id', 'thumbs');
+            var notes = document.createElement('tr');
+            notes.setAttribute('id', 'notes');
+            playlists.forEach(function (playlist) {
+                num = num + 1;
+                var head = document.createElement('th');
+                var ch = document.createElement('h2');
+                ch.innerText = "Channel " + num;
+                head.appendChild(ch);
+                label.appendChild(head);
+                var buttom = document.createElement('td');
+                var thumb = document.createElement('img');
+                thumb.setAttribute('width', "200px");
+                thumb.setAttribute('src', playlist.metadate.thumbs);
+                buttom.appendChild(thumb);
+                thumbs.appendChild(buttom);
+                var attr = document.createElement('td');
+                var note = document.createElement('h3');
+                note.innerText = playlist.metadate.title;
+                attr.appendChild(note);
+                notes.appendChild(attr);
+                var opt = document.createElement('option');
+                opt.setAttribute('value', num - 1);
+                opt.innerText = "Override Channel " + num;
+                document.getElementById('overrides').appendChild(opt);
+            });
+            var node1 = document.getElementById('label');
+            var node2 = document.getElementById('thumbs');
+            var node3 = document.getElementById('notes');
+            node1.parentNode.replaceChild(label, node1);
+            node2.parentNode.replaceChild(thumbs, node2);
+            node3.parentNode.replaceChild(notes, node3);
+        })
+    }
+    setTimeout((RefrashTable(endpoint, "<%=instance %>")), 0);
+    </script>
 </body>
 
 </html>

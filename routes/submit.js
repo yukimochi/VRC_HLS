@@ -10,7 +10,12 @@ router.post('/', function (req, res, next) {
             if (new_list != null) {
                 redis.query_playlist(data.instance, (err, playlists) => {
                     if (!err) {
-                        if (playlists.length == 3) {
+                        if (data.override && playlists[data.override]) {
+                            playlists[data.override] = {
+                                "timestamp": new Date(),
+                                "metadate": new_list
+                            };
+                        } else if (playlists.length == 3) {
                             oldest = 0;
                             for (let i = 0; i < playlists.length; i++) {
                                 if (i == 0) oldest = 0;
