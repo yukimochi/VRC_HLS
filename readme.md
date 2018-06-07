@@ -88,7 +88,8 @@ VRChat HLS Bridge とワールドを接続する `インスタンスキー` を�
 ### 5. 色合いがおかしい件の修正。
 WebPanel では、色の発色がおかしいという現象が[見つかっています](http://uuupa.hatenablog.com/entry/2018/04/05/003936)。
 
-Duplicate Screen で、 [UUUPA/Degamma (MIT Licence)](https://github.com/UUUPA/Degamma) などのシェーダを適用するとよい。
+ Duplicate Screen で、 [yukimochi/WebPanel-Shaders](https://github.com/yukimochi/WebPanel-Shaders
+) などの代替シェーダを適用します。
 
 ## 使い方（応用）
 ### 音量変更を行う javascript 関数について
