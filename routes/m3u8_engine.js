@@ -29,6 +29,7 @@ function m3u8_engine(ls_url, callback) {
             }
             break;
         default:
+            callback(null);
             break;
     }
 }
@@ -43,7 +44,7 @@ function youtube_live(lvid, callback) {
                 "author": vars.author,
                 "m3u8": vars.hlsvp,
                 "thumbs": thumb_pickup(vars.player_response),
-                "lvid" : lvid,
+                "lvid": lvid,
                 "platform": "YouTube Live",
                 "provider": "YouTube"
             }
