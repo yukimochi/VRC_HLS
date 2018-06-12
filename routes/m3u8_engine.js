@@ -20,6 +20,7 @@ function m3u8_engine(ls_url, callback) {
             url = "https://www.mirrativ.com/api/live/live?live_id=" + id;
             wowza_url(url, mirrativ, callback);
             break;
+        case "m.youtube.com":
         case "www.youtube.com":
             if (ls_url.split('?').pop()) {
                 var data = query_decode(ls_url.split('?').pop());
@@ -35,24 +36,24 @@ function m3u8_engine(ls_url, callback) {
 }
 
 function youtube_live(lvid, callback) {
-    const url = "https://www.youtube.com/get_video_info?&video_id=" + lvid;
-    request.get(url, (err, res) => {
-        var vars = query_decode(res.body);
-        if (!err && vars.hlsvp) {
-            var data = {
-                "title": vars.title,
-                "author": vars.author,
-                "m3u8": vars.hlsvp,
-                "thumbs": thumb_pickup(vars.player_response),
-                "lvid": lvid,
-                "platform": "YouTube Live",
-                "provider": "YouTube"
+    var ytdl = require('ytdl-core');
+    ytdl.getInfo("https://www.youtube.com/watch?v=" + lvid,
+        (err, res) => {
+            if (!err && res.hlsvp) {
+                var data = {
+                    "title": res.title,
+                    "author": res.author.name,
+                    "m3u8": res.hlsvp,
+                    "thumbs": thumb_pickup(res.player_response),
+                    "lvid": lvid,
+                    "platform": "YouTube Live",
+                    "provider": "YouTube"
+                }
+                callback(data);
+            } else {
+                callback(null);
             }
-            callback(data);
-        } else {
-            callback(null);
-        }
-    });
+        });
 }
 
 function wowza_url(url, processor, callback) {
@@ -68,7 +69,7 @@ function wowza_url(url, processor, callback) {
 }
 
 function thumb_pickup(player_response) {
-    var thumbnails = JSON.parse(player_response).videoDetails.thumbnail.thumbnails;
+    var thumbnails = player_response.videoDetails.thumbnail.thumbnails;
     var response = { "size": 0, "url": "" };
     thumbnails.forEach(thumbnail => {
         if (thumbnail.width > response.size) {

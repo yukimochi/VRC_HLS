@@ -2,6 +2,6 @@ FROM node:alpine
 
 COPY . /dashboard
 WORKDIR /dashboard
-RUN npm install
+RUN yarn install
 
-CMD ["npm", "start"]
+CMD ["yarn", "start"]
