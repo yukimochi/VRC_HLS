@@ -6,8 +6,8 @@
     <title>VRChat HLS Bridge - Video Player</title>
     <link href="video-js.css" rel="stylesheet">
     <script src="video.js"></script>
-    <script src="videojs-flash.js"></script>
-    <script src="videojs-contrib-hls.js"></script>
+    <script src="videojs-flash.min.js"></script>
+    <script src="videojs-contrib-hls.min.js"></script>
     <script>
         function GetQuery(name) {
             url = window.location.href;
@@ -37,7 +37,7 @@
 <body>
     <div class="container">
         <section class="starter-template">
-            <video autoplay id="VRC_HLS" width="1920" height="1080" class="video-js vjs-default-skin" controls>
+            <video autoplay id="VRC_HLS" width="1920" height="1080" class="video-js vjs-default-skin">
                 <source id="Connection" src="" type="application/x-mpegURL">
             </video>
             </form>
