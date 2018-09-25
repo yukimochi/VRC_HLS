@@ -20,6 +20,10 @@ function m3u8_engine(ls_url, callback) {
             url = "https://www.mirrativ.com/api/live/live?live_id=" + id;
             wowza_url(url, mirrativ, callback);
             break;
+        case "www.twitch.tv":
+            var id = base_url.split('/').pop();
+            twitch(id, callback);
+            break;
         case "m.youtube.com":
         case "www.youtube.com":
             if (ls_url.split('?').pop()) {
@@ -33,6 +37,22 @@ function m3u8_engine(ls_url, callback) {
             callback(null);
             break;
     }
+}
+
+function twitch(id, callback) {
+    var twi = require('twitch-m3u8')("{client ID}");
+    twi.getStream(id)
+    .then(res => {
+        var data = {
+            "title": null,
+            "author": id,
+            "m3u8": res[0].url,
+            "thumbs": null,
+            "lvid": lvid,
+            "platform": "Twitch",
+            "provider": "Twitch"}
+        callback(data)})
+    .catch(err => callback(null));
 }
 
 function youtube_live(lvid, callback) {
