@@ -3,7 +3,8 @@ var engine = require('./m3u8_engine');
 var router = express.Router();
 
 router.get('/', function (req, res, next) {
-  res.render('index', { title: 'Express' });
+  var twitch_enable = !!process.env.TWITCH_CLIENT_ID
+  res.render('index', { twitch: twitch_enable });
 });
 
 router.post('/', function (req, res, next) {

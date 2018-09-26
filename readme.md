@@ -10,6 +10,7 @@ VRChat で各種ライブストリーミングを視聴するためのナビゲ�
  - [SHOWROOM]()
  - [Mirrativ]()
  - [OPENREC.tv]()
+ - [Twitch.tv]() ※ Twitch Developer の Client ID が必要です。
 
 ### 概要
 ライブストリーミングをワールド全員で WebPanel から見ることのできるサービスです。
@@ -29,6 +30,11 @@ VRChat で各種ライブストリーミングを視聴するためのナビゲ�
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/yukimochi/VRC_HLS)
 
  - お手持ちのサーバに Docker コンテナで展開する。（`Dockerfile`, `docker-compose.yml` を提供しています。）
+
+#### Twitch.tv の情報取得を行う場合
+以下の環境変数に Twitch Developer Application の Client ID を設定してください。
+ 
+ - `TWITCH_CLIENT_ID`
 
 ## 使い方
 ### はじめに

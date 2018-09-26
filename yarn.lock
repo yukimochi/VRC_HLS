@@ -702,6 +702,11 @@ tweetnacl@^0.14.3, tweetnacl@~0.14.0:
   resolved "https://registry.yarnpkg.com/tweetnacl/-/tweetnacl-0.14.5.tgz#5ae68177f192d4456269d108afa93ff8743f4f64"
   integrity sha1-WuaBd/GS1EViadEIr6k/+HQ/T2Q=
 
+twitch-m3u8@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/twitch-m3u8/-/twitch-m3u8-1.0.4.tgz#2215944d40917a8441fbb23e3e0126be7f924f6d"
+  integrity sha512-OhmQBhGISjvvzg4d7bG3+G9Kpg2Gk/C0gAZ3cNnHlxKMsn6PFCjt8BjkO9udwmPZalZe5QfOKSrjfy0mZmvfwg==
+
 type-is@~1.6.15, type-is@~1.6.16:
   version "1.6.16"
   resolved "https://registry.yarnpkg.com/type-is/-/type-is-1.6.16.tgz#f89ce341541c672b25ee7ae3c73dee3b2be50194"
