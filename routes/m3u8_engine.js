@@ -20,10 +20,6 @@ function m3u8_engine(ls_url, callback) {
             url = "https://www.mirrativ.com/api/live/live?live_id=" + id;
             wowza_url(url, mirrativ, callback);
             break;
-        case "www.twitch.tv":
-            var id = base_url.split('/').pop();
-            twitch(id, callback);
-            break;
         case "m.youtube.com":
         case "www.youtube.com":
             if (ls_url.split('?').pop()) {
@@ -33,26 +29,59 @@ function m3u8_engine(ls_url, callback) {
                 }
             }
             break;
+        case "www.twitch.tv":
+            if (process.env.TWITCH_CLIENT_ID) {
+                var id = base_url.split('/').pop();
+                twitch(id, process.env.TWITCH_CLIENT_ID, callback);
+                break;
+            }
         default:
             callback(null);
             break;
     }
 }
 
-function twitch(id, callback) {
-    var twi = require('twitch-m3u8')("{client ID}");
-    twi.getStream(id)
-    .then(res => {
-        var data = {
-            "title": null,
-            "author": id,
-            "m3u8": res[0].url,
-            "thumbs": null,
-            "lvid": lvid,
-            "platform": "Twitch",
-            "provider": "Twitch"}
-        callback(data)})
-    .catch(err => callback(null));
+function twitch(id, client_id, callback) {
+    var tw_m3u8 = require('twitch-m3u8')(client_id);
+    tw_m3u8.getStream(id)
+        .then(res => {
+            if (res.length > 0) {
+                var data = {
+                    "m3u8": res[0].url,
+                    "platform": "Twitch",
+                    "provider": "Twitch"
+                }
+                twitch_status(id, client_id, (meta) => {
+                    callback(Object.assign(data, meta));
+                })
+            } else {
+                throw new Error('Receive invalid response.');
+            }
+        })
+        .catch(err => callback(null));
+}
+
+function twitch_status(id, client_id, callback) {
+    url = "https://api.twitch.tv/kraken/streams/" + id;
+    request.get(url, { headers: { "Client-ID": client_id } }, (err, res, body) => {
+        if (!err) {
+            data = {
+                "title": null,
+                "author": null,
+                "thumbs": null
+            };
+            js = JSON.parse(body);
+            if (js.stream.channel.display_name)
+                data.author = js.stream.channel.display_name;
+            if (js.stream.channel.game)
+                data.title = js.stream.channel.game;
+            if (js.stream.preview.large)
+                data.thumbs = js.stream.preview.large;
+            callback(data);
+        } else {
+            callback(null);
+        }
+    });
 }
 
 function youtube_live(lvid, callback) {
