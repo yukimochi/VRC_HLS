@@ -1,0 +1,32 @@
+version: 2
+jobs:
+  test:
+    docker:
+      - image: node:alpine
+        environment:
+          REDIS_URL: redis://localhost:6379
+      - image: redis:alpine
+    steps:
+      - run:
+          name: Install git
+          command: |
+            apk add -U git
+      - checkout
+      - run:
+          name: Yarn install
+          command: |
+            yarn install
+      - run:
+          name: Test run
+          command: |
+            ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- --exit test/*/*.js -R spec
+      - run:
+          name: Push codecov
+          command: |
+            ./node_modules/.bin/codecov
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - test
