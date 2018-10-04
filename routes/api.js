@@ -1,6 +1,7 @@
 var express = require('express');
-var redis = require('./redis_engine');
 var router = express.Router();
+const RedisEngine = require('../classes/redis_engine');
+const redis = new RedisEngine();
 
 router.get('/list', function (req, res, next) {
   if (req.query.instance) {
@@ -26,7 +27,7 @@ router.get('/direct', function (req, res, next) {
         res.status(502);
         res.render('error', { "message": "Program id is out of range." });
       }
-    })
+    });
   } else {
     res.status(502);
     res.render('error', { "message": "Specify instance key and program id." });

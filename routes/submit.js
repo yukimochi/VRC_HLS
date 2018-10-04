@@ -1,7 +1,8 @@
 var express = require('express');
-var m3u8 = require('./m3u8_engine');
-var redis = require('./redis_engine');
 var router = express.Router();
+var m3u8 = require('./m3u8_engine');
+const RedisEngine = require('../classes/redis_engine');
+const redis = new RedisEngine();
 
 router.post('/', function (req, res, next) {
     var data = req.body;
